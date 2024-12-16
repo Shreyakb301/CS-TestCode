@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Registration and Login</title>
+    <h1>Welcome to CheeseWiz</h1>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background-color: #f5f5f5;
+        }
+
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 400px;
+            height: 400px;
+        }
+
+        h2 {
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #ff6200;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .message {
+            margin-top: 10px;
+            font-size: 14px;
+            text-align: center;
+        }
+
+        .tabs {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 20px;
+        }
+
+        .tab {
+            cursor: pointer;
+            padding: 10px;
+            background-color: #e0e0e0;
+            border-radius: 5px;
+        }
+
+        .tab.active {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .form {
+            display: none;
+        }
+
+        .form.active {
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h2>User System</h2>
+        <div id="message" class="message"></div>
+
+        <!-- Tabs -->
+        <div class="tabs">
+            <div class="tab active" onclick="showForm('register')">Register</div>
+            <div class="tab" onclick="showForm('login')">Login</div>
+        </div>
+
+        <!-- Registration Form -->
+        <div id="register-form" class="form active">
+            <h3>Register</h3>
+            <div class="form-group">
+                <label for="reg-username">Username</label>
+                <input type="text" id="reg-username" placeholder="Enter username">
+            </div>
+            <div class="form-group">
+                <label for="reg-password">Password</label>
+                <input type="password" id="reg-password" placeholder="Enter password">
+            </div>
+            <button onclick="registerUser()">Register</button>
+        </div>
+
+        <!-- Login Form -->
+        <div id="login-form" class="form">
+            <h3>Login</h3>
+            <div class="form-group">
+                <label for="login-username">Username</label>
+                <input type="text" id="login-username" placeholder="Enter username">
+            </div>
+            <div class="form-group">
+                <label for="login-password">Password</label>
+                <input type="password" id="login-password" placeholder="Enter password">
+            </div>
+            <button onclick="loginUser()">Login</button>
+        </div>
+    </div>
+
+    <script>
+        function showForm(form) {
+            document.querySelectorAll('.form').forEach(f => f.classList.remove('active'));
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+
+            document.getElementById(`${form}-form`).classList.add('active');
+            document.querySelector(`.tab[onclick="showForm('${form}')"]`).classList.add('active');
+        }
+
+        function showMessage(message, color) {
+            const messageDiv = document.getElementById('message');
+            messageDiv.textContent = message;
+            messageDiv.style.color = color;
+
+            // Optionally hide the message after a few seconds
+            setTimeout(() => {
+                messageDiv.textContent = '';
+            }, 5000); // 5 seconds
+        }
+
+
+
+        async function registerUser() {
+            const username = document.getElementById('reg-username').value;
+            const password = document.getElementById('reg-password').value;
+
+            // Check if fields are empty
+            if (!username || !password) {
+                showMessage("Please fill out both fields.", "red");
+                return;
+            }
+
+            try {
+                const response = await fetch('/register', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, password })
+                });
+
+                if (response.ok) {
+                    showMessage("You are registered! Redirecting to login...", "green");
+
+                    // Clear form fields
+                    document.getElementById('reg-username').value = '';
+                    document.getElementById('reg-password').value = '';
+
+                    // Redirect to login after a short delay
+                    setTimeout(() => {
+                        showForm('login');
+                    }, 2000);
+                } else {
+                    const errorMessage = await response.text();
+                    showMessage(errorMessage, "red"); // Show the error message if the username exists
+                }
+            } catch (error) {
+                console.error("Registration error:", error);
+                showMessage("An unexpected error occurred. Please try again later.", "red");
+            }
+        }
+
+
+
+
+
+        async function loginUser() {
+            const username = document.getElementById('login-username').value;
+            const password = document.getElementById('login-password').value;
+
+            // Check if fields are empty
+            if (!username || !password) {
+                showMessage("Please fill out both fields.", "red");
+                return;
+            }
+
+            try {
+                const response = await fetch('/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, password })
+                });
+
+                if (response.ok) {
+                    // Redirect to the Cheese Explorer page after successful login
+                    window.location.href = '/dashboard.html';
+                } else {
+                    const result = await response.json(); // Assuming the backend sends a JSON response
+                    if (result.message) {
+                        showMessage(result.message, "red"); // Display error message from server
+                    } else {
+                        showMessage("Invalid username or password. Please try again.", "red");
+                    }
+                }
+            } catch (error) {
+                console.error("Login error:", error);
+                showMessage("An unexpected error occurred. Please try again later.", "red");
+            }
+        }
+
+
+
+    </script>
+</body>
+
+</html>

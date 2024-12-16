@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cheese Explorer</title>
+
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background-color: #f4f7fa;
+        }
+
+        header {
+            background-color: #343a40;
+            color: white;
+            padding: 1rem;
+            text-align: center;
+            width: 100%;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 2.5rem;
+        }
+
+        .container {
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 800px;
+            /* Increased width */
+            text-align: center;
+        }
+
+        h2 {
+            margin-bottom: 20px;
+            color: #333;
+            font-size: 1.75rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 1rem;
+            color: #555;
+        }
+
+        select,
+        input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 1rem;
+            background-color: #f9f9f9;
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        select:focus,
+        input:focus {
+            border-color: #007bff;
+            outline: none;
+            background-color: #f3f8ff;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .tabs {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 30px;
+            width: 100%;
+        }
+
+        .tab {
+            padding: 15px 20px;
+            background-color: #f1f1f1;
+            border-radius: 5px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .tab:hover {
+            background-color: #e0e0e0;
+        }
+
+        .tab.active {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .message {
+            margin-top: 10px;
+            font-size: 1rem;
+            text-align: center;
+            color: #888;
+        }
+
+        .back-button {
+            margin-top: 25px;
+            padding: 12px 25px;
+            background-color: #f8f8f8;
+            font-size: 1rem;
+            font-weight: bold;
+            color: #007bff;
+            border: 2px solid #007bff;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .back-button:hover {
+            background-color: #e0e0e0;
+        }
+
+        .table-container {
+            overflow-x: auto;
+            margin-top: 20px;
+            width: 100%;
+            max-width: 800px;
+            /* Match the container width */
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 30px;
+        }
+
+        table,
+        th,
+        td {
+            border: 1px solid #dee2e6;
+        }
+
+        th,
+        td {
+            padding: 12px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #343a40;
+            color: white;
+        }
+
+        td {
+            background-color: #f9f9f9;
+        }
+
+        td:hover {
+            background-color: #f1f1f1;
+        }
+
+        .table-container {
+            overflow-x: auto;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- <header>
+        <h1>Cheese Explorer</h1>
+    </header> -->
+
+    <main>
+        <section id="selectionPage" class="container">
+            <h2>Select Cheese Preferences</h2>
+            <form id="preferencesForm">
+                <label for="milk">Milk Type:</label>
+                <select id="milk" name="milk">
+                    <option value="N/A">Select Milk Type</option>
+                    <option value="Cow">Cow</option>
+                    <option value="Goat">Goat</option>
+                    <option value="Sheep">Sheep</option>
+                    <option value="Buffalo">Buffalo</option>
+                    <option value="Water Buffalo">Water Buffalo</option>
+                    <option value="Yak">Yak</option>
+                    <option value="Plant-Based">Plant-Based</option>
+                    <option value="Moose">Moose</option>
+                    <option value="Camel">Camel</option>
+                    <option value="Donkey">Donkey</option>
+                </select>
+
+                <label for="type">Type:</label>
+                <select id="type" name="type">
+                    <option value="N/A">Select Type</option>
+                    <option value="artisan">Artisan</option>
+                    <option value="blue-veined">Blue-Veined</option>
+                    <option value="brined">Brined</option>
+                    <option value="firm">Firm</option>
+                    <option value="fresh firm">Fresh Firm</option>
+                    <option value="fresh soft">Fresh Soft</option>
+                    <option value="hard">Hard</option>
+                    <option value="organic">Organic</option>
+                    <option value="processed">Processed</option>
+                    <option value="semi-firm">Semi-Firm</option>
+                    <option value="semi-hard">Semi-Hard</option>
+                    <option value="semi-soft">Semi-Soft</option>
+                    <option value="smear-ripened">Smear-Ripened</option>
+                    <option value="soft">Soft</option>
+                    <option value="soft-ripened">Soft-Ripened</option>
+                    <option value="whey">Whey</option>
+                </select>
+
+                <label for="texture">Texture:</label>
+                <select id="texture" name="texture">
+                    <option value="N/A">Select Texture</option>
+                    <option value="Creamy">Creamy</option>
+                    <option value="Crumbly">Crumbly</option>
+                    <option value="Smooth">Smooth</option>
+                    <option value="Hard">Hard</option>
+                </select>
+
+                <label for="flavor">Flavor:</label>
+                <select id="flavor" name="flavor">
+                    <option value="N/A">Select Flavor</option>
+                    <option value="Mild">Mild</option>
+                    <option value="Tangy">Tangy</option>
+                    <option value="Nutty">Nutty</option>
+                    <option value="Sharp">Sharp</option>
+                </select>
+
+                <button type="button" onclick="submitPreferences()">Submit</button>
+                <!-- <button class="back-button" onclick="goBack()">Go Back</button> -->
+
+            </form>
+        </section>
+
+        <section id="resultsPage" style="display: none;" class="container">
+            <h2>Recommended Cheeses</h2>
+            <section id="preferenceSection"></section>
+
+            <div class="table-container">
+                <table id="resultsTable">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Country</th>
+                            <th>Milk Type</th>
+                            <th>Type</th>
+                            <th>Texture</th>
+                            <th>Rind</th>
+                            <th>Flavor</th>
+                            <th>Aroma</th>
+                            <th>Color</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+
+            <button class="back-button" onclick="goBack()">Go Back</button>
+        </section>
+    </main>
+
+    <script>
+        function submitPreferences() {
+            const form = document.getElementById('preferencesForm');
+            const preferences = {};
+
+            if (form.milk.value !== 'N/A') preferences.milk = form.milk.value;
+            if (form.type.value !== 'N/A') preferences.type = form.type.value;
+            if (form.texture.value !== 'N/A') preferences.texture = form.texture.value;
+            if (form.flavor.value !== 'N/A') preferences.flavor = form.flavor.value;
+
+            fetch('/recommend', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(preferences),
+            })
+                .then(response => response.json())
+                .then(recommendations => displayResults(recommendations))
+                .catch(error => console.error('Error fetching recommendations:', error));
+        }
+
+        function displayResults(response) {
+            const preferences = response.preferences;
+            const recommendations = response.recommendations;
+
+            document.getElementById('selectionPage').style.display = 'none';
+            document.getElementById('resultsPage').style.display = 'block';
+
+            const preferenceList = document.createElement('ul');
+            for (const [key, value] of Object.entries(preferences)) {
+                const listItem = document.createElement('li');
+                listItem.textContent = `${key}: ${value}`;
+                preferenceList.appendChild(listItem);
+            }
+
+            const preferenceSection = document.getElementById('preferenceSection');
+            preferenceSection.innerHTML = "<h3>Your Selected Preferences:</h3>";
+            preferenceSection.appendChild(preferenceList);
+
+            const resultsTable = document.getElementById('resultsTable').querySelector('tbody');
+            resultsTable.innerHTML = '';
+
+            recommendations.forEach(recommendation => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${recommendation.cheeseName || 'N/A'}</td>
+                    <td>${recommendation.country || 'N/A'}</td>
+                    <td>${recommendation.milk || 'N/A'}</td>
+                    <td>${recommendation.type || 'N/A'}</td>
+                    <td>${recommendation.texture || 'N/A'}</td>
+                    <td>${recommendation.rind || 'N/A'}</td>
+                    <td>${recommendation.flavor || 'N/A'}</td>
+                    <td>${recommendation.aroma || 'N/A'}</td>
+                    <td>${recommendation.color || 'N/A'}</td>
+                `;
+                resultsTable.appendChild(row);
+            });
+        }
+
+        function goBack() {
+            window.history.back();  // This takes the user to the previous page
+        }
+    </script>
+</body>
+
+</html>

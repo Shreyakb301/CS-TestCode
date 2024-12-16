@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Classify Cheese</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background-color: #f5f5f5;
+        }
+    
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 400px;
+            height: 600px;
+        }
+    
+        h2 {
+            text-align: center;
+        }
+    
+        .form-group {
+            margin-bottom: 15px;
+        }
+    
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+    
+        input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+    
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    
+        button:hover {
+            background-color: #0056b3;
+        }
+    
+        .message {
+            margin-top: 10px;
+            font-size: 14px;
+            text-align: center;
+        }
+    
+        .tabs {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 20px;
+        }
+    
+        .tab {
+            cursor: pointer;
+            padding: 10px;
+            background-color: #e0e0e0;
+            border-radius: 5px;
+        }
+    
+        .tab.active {
+            background-color: #007bff;
+            color: white;
+        }
+    
+        .form {
+            display: none;
+        }
+            .back-button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #f0f0f0;
+            font-size: 16px;
+            cursor: pointer;
+            text-align: center;
+            border: none;
+            color: #333;
+        }
+
+           button {
+            padding: 10px 20px;
+            font-size: 16px;
+            margin-top: 10px;
+            cursor: pointer;
+        }
+    
+        .form.active {
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Classify Cheese</h1>
+        <form id="cheese-classification-form">
+            <label for="cheese-name">Enter Cheese Name:</label>
+            <input type="text" id="cheese-name" name="cheese-name" required>
+            <br><br>
+            <button type="button" onclick="getCheeseDetails()">Get Cheese Details</button>
+        </form>
+        <button class="back-button" onclick="goBack()">Back</button>
+
+        <div id="result"></div>
+    </div>
+
+    <script>
+        function getCheeseDetails() {
+            const cheeseName = document.getElementById('cheese-name').value.trim().toLowerCase();
+
+            // Example cheese data
+            const cheeseDetails = {
+                cheddar: {
+                    type: "Cheddar",
+                    vegetarian: true,
+                    vegan: false,
+                    texture: "Firm",
+                    flavor: "Sharp",
+                    color: "Yellow",
+                    aroma: "Strong"
+                },
+                parmesan: {
+                    type: "Parmesan",
+                    vegetarian: true,
+                    vegan: false,
+                    texture: "Granular",
+                    flavor: "Nutty",
+                    color: "Pale yellow",
+                    aroma: "Strong"
+                },
+                mozzarella: {
+                    type: "Mozzarella",
+                    vegetarian: true,
+                    vegan: false,
+                    texture: "Soft",
+                    flavor: "Mild",
+                    color: "White",
+                    aroma: "Mild"
+                },
+                brie: {
+                    type: "Brie",
+                    vegetarian: true,
+                    vegan: false,
+                    texture: "Soft and creamy",
+                    flavor: "Mild",
+                    color: "White with a bloomy rind",
+                    aroma: "Mild"
+                }
+            };
+
+            const cheese = cheeseDetails[cheeseName];
+
+            let result = '';
+            if (cheese) {
+                result = `
+                    <h2>${cheese.type} Cheese Details</h2>
+                    <p><strong>Type:</strong> ${cheese.type}</p>
+                    <p><strong>Vegetarian:</strong> ${cheese.vegetarian ? "Yes" : "No"}</p>
+                    <p><strong>Vegan:</strong> ${cheese.vegan ? "Yes" : "No"}</p>
+                    <p><strong>Texture:</strong> ${cheese.texture}</p>
+                    <p><strong>Flavor:</strong> ${cheese.flavor}</p>
+                    <p><strong>Color:</strong> ${cheese.color}</p>
+                    <p><strong>Aroma:</strong> ${cheese.aroma}</p>
+                `;
+            } else {
+                result = `<p>No details found for the cheese: <strong>${cheeseName}</strong>. Please try another name.</p>`;
+            }
+
+            document.getElementById('result').innerHTML = result;
+        }
+
+      function goBack() {
+            window.history.back();  // This takes the user to the previous page
+        }
+    </script>
+</body>
+
+</html>
